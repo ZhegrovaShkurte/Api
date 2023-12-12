@@ -16,7 +16,7 @@ class WagesController extends Controller
         try {
             $validateUser = Validator::make($request->all(),
                 [
-                    'user_id',
+                    'user_id', 
                     'active_salary',
                     'previous_salary',
                     
