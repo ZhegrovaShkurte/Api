@@ -46,8 +46,9 @@ class EmployeeController extends Controller
      */
     public function show($id)
     {
-        //
+     //
     }
+    
 
     /**
      * Update the specified resource in storage.
@@ -63,7 +64,7 @@ class EmployeeController extends Controller
             $user = User::find($id);
 
             $user->update($validated);
-            
+
             $data = [
                 'status' => 200,
                 'message' => 'Data updated successfully',

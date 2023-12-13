@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\User;
 use App\Models\Wages;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -54,7 +55,18 @@ class WagesEmployeeController extends Controller
      */
     public function show($id)
     {
-        //
+        try {
+            $user = User::find($id);
+        
+            if ($user) {
+                $wages = $user->wages;
+                return response()->json(['wages' => $wages]);
+            } else {
+                return response()->json(['error' => 'User not found'], 404);
+            }
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'An error occurred while processing the request'], 500);
+        }
     }
 
     /**
@@ -77,6 +89,15 @@ class WagesEmployeeController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $wages = Wages::find($id);
+        $wages->delete();
+
+        $data =
+            [
+                'status' => 200,
+                'message' => "data deleted successfully"
+            ];
+
+        return response()->json($data, 200);
     }
 }

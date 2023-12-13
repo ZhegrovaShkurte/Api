@@ -29,10 +29,14 @@ Route::group(['middleware' => ['auth:sanctum', 'adminmiddleware']], function () 
     Route::delete('employee/destroy/{id}', [EmployeeController::class, 'destroy']);
     Route::get('wages', [WagesEmployeeController::class, 'index']);
     Route::post('wages', [WagesEmployeeController::class, 'store']);
+    Route::get('wages/show/{id}', [WagesEmployeeController::class, 'show']);
+    Route::delete('wages/destroy/{id}', [WagesEmployeeController::class, 'destroy']);
 });
 
 Route::post('auth/register', [AuthController::class, 'register']);
 Route::post('auth/login', [AuthController::class, 'login']);
+
+
 
 
 
