@@ -89,8 +89,8 @@ class EmployeeController extends Controller
 
         $data =
             [
-                'status' => 200,
-                'message' => "data deleted successfully"
+             'status' => 200,
+             'message' => "data deleted successfully"
             ];
 
         return response()->json($data, 200);

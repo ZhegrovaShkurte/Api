@@ -10,9 +10,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Role extends Model
 {
-    use HasApiTokens, HasFactory, Notifiable ;
+    use HasApiTokens, HasFactory, Notifiable;
 
-    protected $fillable = ['name'];
+    protected $fillable = [
+        'name'
+    ];
     public function users(): HasMany
     {
         return $this->hasMany(User::class);

@@ -27,7 +27,6 @@ class StoreWagesRequest extends FormRequest
             'user_id',
             'amount',
             'is_active',
-          
         ];
     }
 }

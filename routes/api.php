@@ -23,17 +23,20 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::group(['middleware' => ['auth:sanctum', 'adminmiddleware']], function() {
+Route::group(['middleware' => ['auth:sanctum', 'adminmiddleware']], function () {
     Route::get('employee', [EmployeeController::class, 'index']);
     Route::put('employee/update/{id}', [EmployeeController::class, 'update']);
-   Route::delete('employee/destroy/{id}', [EmployeeController::class, 'destroy']);
+    Route::delete('employee/destroy/{id}', [EmployeeController::class, 'destroy']);
+    Route::get('wages', [WagesEmployeeController::class, 'index']);
+    Route::post('wages', [WagesEmployeeController::class, 'store']);
 });
 
 Route::post('auth/register', [AuthController::class, 'register']);
 Route::post('auth/login', [AuthController::class, 'login']);
 
-Route::get('wages', [WagesEmployeeController::class, 'index']);
-Route::post('wages', [WagesEmployeeController::class, 'store']);
+
+
+
 
 
 

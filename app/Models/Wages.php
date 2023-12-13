@@ -9,15 +9,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Wages extends Model
 {
-    use HasApiTokens, HasFactory, Notifiable ;
+    use HasApiTokens, HasFactory, Notifiable;
 
     protected $fillable = [
         'user_id',
         'amount',
-        'is_active'
+        'is_active',
     ];
 
-    public function users()
+    public function user()
     {
         return $this->belongsTo(User::class);
     }

@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Requests\StoreWagesRequest;
 use App\Models\Wages;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreWagesRequest;
+use Illuminate\Support\Facades\Validator;
 
 class WagesEmployeeController extends Controller
 {
@@ -29,28 +30,17 @@ class WagesEmployeeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreWagesRequest $request)
+    public function store(Request $request)
     {
-        try {
-            $wages = Wages::create([
-                'user_id' => $request->input('user_id'),
-                'amount' => $request->input('amount'),
-                'is_active' => 'boolean',
+        $request->validate([
+            'user_id' => 'required',
+            'amount' => 'required|numeric',
+            'is_active' => 'boolean',
+        ]);
 
-            ]);
-
-            return response()->json([
-                'status' => true,
-                'message' => 'Wages Created Successfully',
-                'token' => $wages->createToken("API TOKEN")->plainTextToken
-            ], 200);
-
-        } catch (\Throwable $th) {
-            return response()->json([
-                'status' => false,
-                'message' => $th->getMessage()
-            ], 500);
-        }
+        $wages = Wages::create($request->all());
+        
+        return response()->json(['message' => 'Wages created successfully', 'data' => $wages], 201);
     }
 
     /**
