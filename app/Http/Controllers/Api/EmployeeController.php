@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\UpdateEmployeeRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Validator;
+
 
 class EmployeeController extends Controller
 {
@@ -56,42 +57,23 @@ class EmployeeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateEmployeeRequest $request, $id)
     {
-        $validator = Validator::make($request->all(),
-        
-        [
-            'name'=>'required',
-            'email'=>'required|email'
-        ]);
+        $user = User::find($id);
 
-        if($validator->fails())
-        {
-            $data=[
-                "status"=>422,
-                "message"=>$validator->messages()
-            ];
+        $user->name = $request->name;
+        $user->email = $request->email;
 
-            return response()->json($data,200);
-        }
-        else
-        {
-            $user = User::find($id);
+        $user->save();
 
-            $user->name=$request->name;
-            $user->email=$request->email;
+        $data = [
+            'status' => 200,
+            'message' => 'Data updated successfully',
+        ];
 
-            $user->save();
-
-            $data=[
-                'status'=>200,
-                'message'=>'Data updated successfully'
-            ];
-
-            return response()->json($data,200);
-        }
-
+        return response()->json($data, 200);
     }
+
 
     /**
      * Remove the specified resource from storage.
@@ -101,16 +83,16 @@ class EmployeeController extends Controller
      */
     public function destroy($id)
     {
-        $user=User::find($id);
+        $user = User::find($id);
 
         $user->delete();
 
-       $data=
-       [
-         'status'=> 200,
-         'message'=>"data deleted successfully"
-       ];
+        $data =
+            [
+                'status' => 200,
+                'message' => "data deleted successfully"
+            ];
 
-        return response()->json($data,200);
+        return response()->json($data, 200);
     }
 }

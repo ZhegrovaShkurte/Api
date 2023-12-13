@@ -16,8 +16,7 @@ return new class extends Migration
         Schema::create('wages', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id');
-            $table->decimal('active_salary');
-            $table->decimal('previous_salary');
+            $table->integer('amount');
             $table->timestamps();
         });
     }
@@ -29,10 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('wages', function($table) {
-            $table->dropForeign('user_id');
-            $table->dropColumn('active_salary');
-            $table->dropColumn('previous_salary');
-    });
-}
+        Schema::dropIfExists('wages');
+    }
 };

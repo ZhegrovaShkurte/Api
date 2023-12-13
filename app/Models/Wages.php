@@ -13,11 +13,11 @@ class Wages extends Model
 
     protected $fillable = [
         'user_id',
-        'active_salary',
-        'previous_salary',
+        'amount',
+        'is_active'
     ];
 
-    public function user()
+    public function users()
     {
         return $this->belongsTo(User::class);
     }

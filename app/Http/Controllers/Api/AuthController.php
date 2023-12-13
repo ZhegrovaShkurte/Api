@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\LoginRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -12,37 +13,18 @@ use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
-     /**
+    /**
      * Create User
      * @param Request $request
      * @return User 
      */
-    public function register(Request $request)
+    public function register(RegisterRequest $request)
     {
         try {
-            $validateUser = Validator::make($request->all(), 
-            [
-                'name' => 'required',
-                'email' => 'required|email|unique:users,email',
-                'password' => 'required',
-                'role_id' => 'required',
-    
-            ]);
 
-            if($validateUser->fails()){
-                return response()->json([
-                    'status' => false,
-                    'message' => 'validation error',
-                    'errors' => $validateUser->errors()
-                ], 401);
-            }
+            $validated = $request->validated();
 
-            $user = User::create([
-                'name' => $request->name,
-                'email' => $request->email,
-                'password' => Hash::make($request->password),
-                'role_id' => 2
-            ]);
+            $user = User::create([$validated]);
 
             return response()->json([
                 'status' => true,
@@ -56,38 +38,27 @@ class AuthController extends Controller
                 'message' => $th->getMessage()
             ], 500);
         }
-}
+    }
 
     /**
      * Login The User
      * @param Request $request
      * @return User
      */
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
         try {
-            $validateUser = Validator::make($request->all(), 
-            [
-                'email' => 'required|email',
-                'password' => 'required'
-            ]);
 
-            if($validateUser->fails()){
+            $validated = $request->validated();
+
+            if (!Auth::attempt($validated)) {
                 return response()->json([
                     'status' => false,
-                    'message' => 'validation error',
-                    'errors' => $validateUser->errors()
+                    'message' => 'Email & Password do not match with our records.',
                 ], 401);
             }
 
-            if(!Auth::attempt($request->only(['email', 'password']))){
-                return response()->json([
-                    'status' => false,
-                    'message' => 'Email & Password does not match with our record.',
-                ], 401);
-            }
-
-            $user = User::where('email', $request->email)->first();
+            $user = $request->user();
 
             return response()->json([
                 'status' => true,
