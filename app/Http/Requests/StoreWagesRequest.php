@@ -24,9 +24,9 @@ class StoreWagesRequest extends FormRequest
     public function rules()
     {
         return [
-            'user_id',
-            'amount',
-            'is_active',
+            'user_id' =>'required',
+            'amount'  =>'required',
+            'is_active' =>'required',
         ];
     }
 }

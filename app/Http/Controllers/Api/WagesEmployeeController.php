@@ -18,7 +18,6 @@ class WagesEmployeeController extends Controller
     public function index(Request $request)
     {
         $isActive = $request->input('is_active', true);
-
         $wages = Wages::where('is_active', $isActive)->get();
 
         return response()->json(['wages' => $wages, 'isActive' => $isActive]);

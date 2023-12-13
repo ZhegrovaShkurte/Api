@@ -7,9 +7,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\RegisterRequest;
-use Illuminate\Support\Facades\Validator;
+
 
 class AuthController extends Controller
 {
@@ -21,9 +20,7 @@ class AuthController extends Controller
     public function register(RegisterRequest $request)
     {
         try {
-
             $validated = $request->validated();
-
             $user = User::create([$validated]);
 
             return response()->json([

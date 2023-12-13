@@ -25,7 +25,6 @@ class EmployeeController extends Controller
         ];
 
         return response()->json($data, 200);
-
     }
 
     /**
@@ -59,12 +58,9 @@ class EmployeeController extends Controller
      */
     public function update(UpdateEmployeeRequest $request, $id)
     {
+        $validated = $request->validated();
         $user = User::find($id);
-
-        $user->name = $request->name;
-        $user->email = $request->email;
-
-        $user->save();
+        $user->update($validated);
 
         $data = [
             'status' => 200,
@@ -73,7 +69,6 @@ class EmployeeController extends Controller
 
         return response()->json($data, 200);
     }
-
 
     /**
      * Remove the specified resource from storage.
@@ -84,13 +79,12 @@ class EmployeeController extends Controller
     public function destroy($id)
     {
         $user = User::find($id);
-
         $user->delete();
 
         $data =
             [
-             'status' => 200,
-             'message' => "data deleted successfully"
+                'status' => 200,
+                'message' => "data deleted successfully"
             ];
 
         return response()->json($data, 200);
