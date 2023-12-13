@@ -58,16 +58,27 @@ class EmployeeController extends Controller
      */
     public function update(UpdateEmployeeRequest $request, $id)
     {
-        $validated = $request->validated();
-        $user = User::find($id);
-        $user->update($validated);
+        try {
+            $validated = $request->validated();
+            $user = User::find($id);
 
-        $data = [
-            'status' => 200,
-            'message' => 'Data updated successfully',
-        ];
+            $user->update($validated);
+            
+            $data = [
+                'status' => 200,
+                'message' => 'Data updated successfully',
+            ];
 
-        return response()->json($data, 200);
+            return response()->json($data, 200);
+
+        } catch (\Exception $e) {
+            $data = [
+                'status' => 500,
+                'message' => 'Error updating data: ' . $e->getMessage(),
+            ];
+
+            return response()->json($data, 500);
+        }
     }
 
     /**

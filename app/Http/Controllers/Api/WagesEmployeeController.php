@@ -31,15 +31,19 @@ class WagesEmployeeController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'user_id' => 'required',
-            'amount' => 'required|numeric',
-            'is_active' => 'boolean',
-        ]);
-
-        $wages = Wages::create($request->all());
+        try {
+            $request->validate([
+                'user_id' => 'required',
+                'amount' => 'required|numeric',
+                'is_active' => 'boolean',
+            ]);
         
-        return response()->json(['message' => 'Wages created successfully', 'data' => $wages], 201);
+            $wages = Wages::create($request->all());
+        
+            return response()->json(['message' => 'Wages created successfully', 'data' => $wages], 201);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Error creating wages', 'message' => $e->getMessage()], 500);
+        }
     }
 
     /**
